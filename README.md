@@ -13,8 +13,8 @@
 ## ⚙️ Встановлення
 1 Клонувати репозиторій:
 ```
-git clone https://github.com/username/telegram-portfolio-bot.git
-cd telegram-portfolio-bot`
+git clone https://github.com/THELAPISUA/PortfolioBotTelegram
+cd PortfolioBotTelegram`
 ```
 
 2 Встановити залежності:
