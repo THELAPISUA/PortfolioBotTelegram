@@ -17,7 +17,8 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from textwrap import wrap
 
-TOKEN = "BOT_TOKEN"
+TOKEN = os.getenv("TOKEN")
+print(TOKEN)
 PHOTO_MAIN = "assets/mainPhoto.jpg"
 
 dp = Dispatcher()
@@ -33,18 +34,18 @@ class Portfolio(StatesGroup):
 
 def create_portfolio(fullname, specialization, skills, contacts, photo_path, user_id):
     """Генерує PDF-файл з портфоліо"""
-    folder = "portfolios"
+    folder = "assets/portfolios"
     os.makedirs(folder, exist_ok=True)
     pdf_path = os.path.join(folder, f"portfolio_{user_id}.pdf")
 
-    pdfmetrics.registerFont(TTFont("DejaVuSans", "DejaVuSans.ttf"))
+    pdfmetrics.registerFont(TTFont("DejaVuSans", "assets/DejaVuSans.ttf"))
 
     c = canvas.Canvas(pdf_path, pagesize=A4)
     width, height = A4
 
     # Заголовок
     c.setFont("DejaVuSans", 22)
-    c.drawString(200-len(fullname)*2.5, height - 80, f"{fullname}")
+    c.drawString(200-len(fullname)*2.4, height - 80, f"{fullname}")
 
     # Фото
     if photo_path and os.path.exists(photo_path):
@@ -55,7 +56,7 @@ def create_portfolio(fullname, specialization, skills, contacts, photo_path, use
     c.setFont("DejaVuSans", 12)
 
     y = height - 120
-    for line in wrap(f"{specialization}", 60):
+    for line in wrap(f"{specialization}", 50):
         c.drawString(200, y, line)
         y -= 15
 
@@ -107,8 +108,8 @@ async def process_fullname(msg: Message, state: FSMContext) -> None:
 async def process_photo(msg: Message, state: FSMContext, bot: Bot) -> None:
     photo_id = msg.photo[-1].file_id
     photo_file = await bot.get_file(photo_id)
-    photo_path = f"photos/{msg.from_user.id}.jpg"
-    os.makedirs("photos", exist_ok=True)
+    photo_path = f"assets/photos/{msg.from_user.id}.jpg"
+    os.makedirs("assets/photos", exist_ok=True)
     await bot.download_file(photo_file.file_path, photo_path)
 
     await state.update_data(photo=photo_path)
