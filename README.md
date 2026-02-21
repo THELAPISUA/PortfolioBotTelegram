@@ -11,24 +11,65 @@
 ---
 
 ## ⚙️ Встановлення
-1 Клонувати репозиторій:
-```
-git clone https://github.com/THELAPISUA/PortfolioBotTelegram
-cd PortfolioBotTelegram`
-```
+1. Стандартний спосіб
+    1 Клонувати репозиторій:
+    ```
+    git clone https://github.com/THELAPISUA/PortfolioBotTelegram
+    cd PortfolioBotTelegram`
+    ```
 
-2 Встановити залежності:
-```
-pip install -r requirements.txt
-```
+    2 Встановити залежності:
+    ```
+    pip install -r requirements.txt
+    ```
 
-3.Створити бота у Telegram через BotFather
+    3.Створити бота у Telegram через BotFather
 
-4.Додати токен у файл
-```
-TOKEN = "BOT_TOKEN"
-```
+    4.Додати токен у файл
+    ```
+    TOKEN = "BOT_TOKEN"
+    ```
+2. Через Docker
 
+    1. Клонувати репозиторій:
+    ```
+        git clone https://github.com/THELAPISUA/PortfolioBotTelegram
+        cd PortfolioBotTelegram
+    ```
+
+    2. Створити файл `.env` з токеном:
+    ```
+        TOKEN=BOT_TOKEN
+    ```
+
+    3. Створити `Dockerfile` у корені проєкту:
+    ```dockerfile
+        FROM python:3.10-slim
+
+        WORKDIR /app
+
+        COPY requirements.txt .
+        RUN pip install --no-cache-dir -r requirements.txt
+
+        COPY . .
+
+        CMD ["python", "bot.py"]
+    ```
+
+    4. Зібрати Docker-образ:
+    ```
+        docker build -t portfolio-bot .
+    ```
+
+    5. Запустити контейнер:
+    ```
+        docker run -d --env-file .env --name portfolio-bot portfolio-bot
+    ```
+
+    > 💡 Прапор `-d` запускає контейнер у фоновому режимі. Щоб переглянути логи, використовуйте:
+    > ```
+    > docker logs -f portfolio-bot
+    > ```
 ---
 
 ## 📝 Використання
